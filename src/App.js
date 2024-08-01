@@ -23,25 +23,23 @@ function App() {
     useSelector((state) => state.get_list_conversation.loading),
     useSelector((state) => state.create_conversation.loading),
   ]);
-  const is_loading = useSelector((state) => state.loading.loading);
+  const is_loading = useSelector((state) => state.checkStatusLogin.loading);
   console.log(loading);
-  useEffect(() => {
-    loading.forEach((item) => {
-      if (item === true) {
-        dispatch(loading_request());
-        return;
-      }
-      dispatch(finish_request());
-    });
-  }, [loading]);
+  // useEffect(() => {
+  //   loading.forEach((item) => {
+  //     if (item === true) {
+  //       dispatch(loading_request());
+  //       return;
+  //     }
+  //     dispatch(finish_request());
+  //   });
+  // }, [loading]);
   useEffect(() => {
     dispatch(checkStatusLogin());
   }, []);
   return (
     <BrowserRouter>
-      {is_loading &&
-        setTimeout(() => console.log("check"), 2000) && <Spinner /> &&
-        console.log("loading")}
+      {is_loading && <Spinner />}
       <Routes>
         <Route>
           {/* <Route path="/test" element={<Spinner />}></Route> */}
