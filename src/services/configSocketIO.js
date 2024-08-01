@@ -1,0 +1,83 @@
+import { io } from "socket.io-client";
+import { get_token_io } from "./get_token";
+class Socket {
+  constructor() {
+  }
+  async initialize() {
+    try {
+      const token = await get_token_io();
+      if (token.status === 200) {
+        this.socket = io("http://localhost:8080", {
+          withCredentials: true,
+          "force new connection": true,
+        });
+        console.log("connect socket success");
+      }
+    } catch (err) {
+      console.log(err.response);
+    }
+  }
+  handle_new_message(callback) {
+    if (!this.socket) return;
+    this.socket.on("receive message", (msg_data) => {
+      callback(msg_data);
+    });
+  }
+  handle_load_all_message_in_room(callback) {
+    if (!this.socket) return;
+    this.socket.on("load all message in room", (msg_data, user_id) => {
+      callback(msg_data, user_id);
+    });
+  }
+  handle_disconnect(callback) {
+    if (!this.socket) return;
+    this.socket.on("disconnect", () => {
+      callback();
+    });
+  }
+  handle_get_new_mes_of_list_conversation(callback) {
+    if (!this.socket) return;
+    this.socket.on("get new message of list conversation", (data) => {
+      callback(data);
+    });
+  }
+  handle_notification(callback) {
+    if (!this.socket) return;
+    this.socket.on("notification", (message) => {
+      callback(message);
+      this.socket.emit("get new message of list conversation");
+    });
+  }
+  handle_room(conversation_id) {
+    if (!this.socket) return;
+    this.socket.emit("room", conversation_id);
+    console.log("join room");
+  }
+  req_get_new_message_of_list_conversation() {
+    if (!this.socket) return;
+    this.socket.emit("get new message of list conversation");
+  }
+  req_join_rom(conversation_id) {
+    if (!this.socket) return;
+    this.socket.emit("room", conversation_id);
+  }
+  req_send_message(message, conversation_data) {
+    if (!this.socket) return;
+    this.socket.emit("send message", { message, conversation_data });
+  }
+}
+// const socket = io("http://localhost:8080", {
+//   withCredentials: true,
+//   'force new connection': true,
+// });
+// export const handle_new_message = (callback) => {
+//   socket.on("receive message", (msg_data, user_id) => {
+//     callback(msg_data, user_id);
+//   });
+// };
+// export const handle_load_all_message_in_room = (callback) => {
+//   socket.on("load all message in room", (msg_data, user_id) => {
+//     callback(msg_data,user_id);
+//   });
+// };
+export default Socket;
