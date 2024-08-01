@@ -11,6 +11,7 @@ import _ from "lodash";
 import checkStatusLogin from "./redux/action/statusLogin";
 import { useDispatch, useSelector } from "react-redux";
 function App() {
+  console.log(process.env.REACT_APP_API_URL)
   const dispatch = useDispatch();
   const is_Login = useSelector((state) => state.statusLogin.isLogin);
   useEffect(() => {

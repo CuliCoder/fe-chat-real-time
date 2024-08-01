@@ -1,6 +1,6 @@
 import { io } from "socket.io-client";
 import { get_token_io } from "./get_token";
-require("dotenv").config();
+
 class Socket {
   constructor() {
   }
@@ -8,7 +8,7 @@ class Socket {
     try {
       const token = await get_token_io();
       if (token.status === 200) {
-        this.socket = io(process.env.BE_URL_IO, {
+        this.socket = io(process.env.REACT_APP_IO_URL, {
           withCredentials: true,
           "force new connection": true,
         });
