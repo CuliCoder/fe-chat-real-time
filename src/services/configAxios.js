@@ -1,8 +1,7 @@
 import axios from "axios";
-import { getCsrfToken } from "../utils/getCSRF";
+require("dotenv").config();
 const instance = axios.create({
-  // baseURL: "http://localhost:8080/api/v1/",
-  baseURL:"https://be-chat-real-time.onrender.com/api/v1/",
+  baseURL: process.env.BE_URL_API,
   withCredentials: true,
   headers: {
     Accept: "application/json",
