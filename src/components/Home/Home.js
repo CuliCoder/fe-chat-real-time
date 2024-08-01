@@ -24,7 +24,6 @@ const Home = () => {
   }, []);
   const user_data = useSelector((state) => state.find_user.data);
   const messages = useSelector((state) => state.message.data);
-  const is_Login = useSelector((state) => state.statusLogin.isLogin);
   const conversation_data = useSelector(
     (state) => state.create_conversation.data
   );
@@ -57,9 +56,7 @@ const Home = () => {
     });
     socketInstance.req_get_new_message_of_list_conversation();
   }, [socketInstance]);
-  useEffect(() => {
-    console.log("get new message of list conversation");
-  }, [is_Login]);
+  
   const change_find = (e) => {
     dispatch(find_user(e.target.value));
   };
@@ -148,7 +145,6 @@ const Home = () => {
           </div>
           <div className="container-conversations " data-spy="scroll">
             {list_conversation.map((item) => {
-              console.log(item);
               return (
                 <div
                   key={item.remaining_user_id}
@@ -187,15 +183,6 @@ const Home = () => {
           </div>
           <div className="chat-content">
             {messages.message.map((item) => {
-              console.log(messages);
-              console.log(socketInstance.socket.id);
-              // const isMyMessage = messages.socketID
-              //   ? messages.socketID === socketInstance.socket.id
-              //     ? true
-              //     : false
-              //   : item.user_id === messages.user_id
-              //   ? true
-              //   : false;
               const isMyMessage =
                 item.socketID !== undefined
                   ? item.socketID === socketInstance.socket.id
