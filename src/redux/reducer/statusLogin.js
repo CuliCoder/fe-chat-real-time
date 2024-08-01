@@ -1,4 +1,3 @@
-import { load } from "react-cookies";
 import { isLogin, isLogout, checkLoginReq } from "../action/statusLogin";
 const initState = {
   isLogin: false,

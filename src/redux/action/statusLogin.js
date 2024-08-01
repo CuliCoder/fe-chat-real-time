@@ -26,7 +26,7 @@ const checkStatusLogin = () => {
         dispatch(is_Login());
       }
     } catch (err) {
-      // dispatch(is_logout());
+      dispatch(is_logout());
       console.log(err.response);
     }
   };
