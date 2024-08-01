@@ -1,6 +1,5 @@
 import { io } from "socket.io-client";
 import { get_token_io } from "./get_token";
-
 class Socket {
   constructor() {
   }

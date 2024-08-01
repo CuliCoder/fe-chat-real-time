@@ -9,13 +9,16 @@ import { toast } from "react-toastify";
 import socket from "../../services/configSocketIO";
 import { list_Conversation } from "../../redux/action/conversation";
 import Spinner from "../Spinner/Spinner";
+import { loading_request, finish_request } from "../../redux/action/loading";
 const Home = () => {
   const [socketInstance, setSocketInstance] = useState(null);
   useEffect(() => {
     const initSocket = async () => {
+      dispatch(loading_request());
       const SocketIO = new socket();
       await SocketIO.initialize();
       setSocketInstance(SocketIO);
+      dispatch(finish_request());
     };
     initSocket();
   }, []);
@@ -33,7 +36,7 @@ const Home = () => {
   const loading_get_list_conversation = useSelector(
     (state) => state.get_list_conversation.loading
   );
-
+  const loading_connectIO = useSelector((state) => state.loading.loading);
   const dispatch = useDispatch();
   useEffect(() => {
     if (!socketInstance) return;
@@ -100,6 +103,7 @@ const Home = () => {
     <>
       {(loading_find_user ||
         loading_get_list_conversation ||
+        loading_connectIO ||
         loading_creat_conversation) && <Spinner />}
       <div className="container-home">
         <Nav />
