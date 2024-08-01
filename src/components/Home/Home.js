@@ -8,6 +8,7 @@ import { load_all_Message, new_Message } from "../../redux/action/message";
 import { toast } from "react-toastify";
 import socket from "../../services/configSocketIO";
 import { list_Conversation } from "../../redux/action/conversation";
+import Spinner from "../Spinner/Spinner";
 const Home = () => {
   const [socketInstance, setSocketInstance] = useState(null);
   useEffect(() => {
@@ -20,30 +21,32 @@ const Home = () => {
   }, []);
   const user_data = useSelector((state) => state.find_user.data);
   const messages = useSelector((state) => state.message.data);
-  console.log(messages);
   const is_Login = useSelector((state) => state.statusLogin.isLogin);
   const conversation_data = useSelector(
     (state) => state.create_conversation.data
   );
   const list_conversation = useSelector((state) => state.conversation.data);
+  const loading_creat_conversation = useSelector(
+    (state) => state.create_conversation.loading
+  );
+  const loading_find_user = useSelector((state) => state.find_user.loading);
+  const loading_get_list_conversation = useSelector(
+    (state) => state.get_list_conversation.loading
+  );
+
   const dispatch = useDispatch();
   useEffect(() => {
     if (!socketInstance) return;
     socketInstance.handle_new_message((msg_data, user_id) => {
-      console.log(msg_data, user_id);
       dispatch(new_Message(msg_data, user_id));
     });
     socketInstance.handle_load_all_message_in_room((msg_data, userID) => {
-      console.log(msg_data, userID);
       dispatch(load_all_Message(msg_data, userID));
     });
     socketInstance.handle_notification((message) => {
-      console.log(message);
       toast.info(message);
-      // socket.emit("get new message of list conversation");
     });
     socketInstance.handle_get_new_mes_of_list_conversation((data) => {
-      console.log(data);
       dispatch(list_Conversation(data));
     });
     socketInstance.handle_disconnect(() => {
@@ -53,7 +56,6 @@ const Home = () => {
   }, [socketInstance]);
   useEffect(() => {
     console.log("get new message of list conversation");
-    console.log(is_Login);
   }, [is_Login]);
   const change_find = (e) => {
     dispatch(find_user(e.target.value));
@@ -67,7 +69,6 @@ const Home = () => {
     dispatch(create_conversation(id));
   };
   useEffect(() => {
-    console.log(conversation_data);
     if (Object.keys(conversation_data).length !== 0) {
       socketInstance.req_join_rom(conversation_data.conversation_id);
     }
@@ -95,157 +96,145 @@ const Home = () => {
     socketInstance.req_send_message(message, conversation_data);
     document.querySelector(".input-message").value = "";
   };
-  const disconerstion = () => {
-    socketInstance.socket.disconnect();
-  };
   return (
-    <div className="container-home">
-      <Nav />
-      <div className="container-list">
-        <div className="container-search">
-          <div className="search-place">
-            <label className="label-search" htmlFor="input-search">
-              <i className="bi bi-search"></i>
-            </label>
-            <input
-              id="input-search"
-              className="input-search"
-              placeholder="Tìm kiếm"
-              onChange={change_find}
-              onFocus={focus_search}
-            />
+    <>
+      {(loading_find_user ||
+        loading_get_list_conversation ||
+        loading_creat_conversation) && <Spinner />}
+      <div className="container-home">
+        <Nav />
+        <div className="container-list">
+          <div className="container-search">
+            <div className="search-place">
+              <label className="label-search" htmlFor="input-search">
+                <i className="bi bi-search"></i>
+              </label>
+              <input
+                id="input-search"
+                className="input-search"
+                placeholder="Tìm kiếm"
+                onChange={change_find}
+                onFocus={focus_search}
+              />
+            </div>
+            <button
+              onClick={close_list_user}
+              className="btn-close-list-user btn btn-light d-none"
+            >
+              Close
+            </button>
           </div>
-          <button
-            onClick={close_list_user}
-            className="btn-close-list-user btn btn-light d-none"
-          >
-            Close
-          </button>
-        </div>
-        <div className="container-list-user d-none">
-          {user_data.map((item) => {
-            return (
-              <div
-                key={item.id}
-                className="user"
-                onClick={() => click_converstion(item.id)}
-              >
-                <div className="user-avatar">
-                  <div className="avatar"></div>
-                </div>
-                <div className="user-name">
-                  <div className="name">{item.fullname}</div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-        <div className="container-conversations " data-spy="scroll">
-          {list_conversation.map((item) => {
-            console.log(item);
-            return (
-              <div
-                key={item.remaining_user_id}
-                className="conversation"
-                onClick={() => click_converstion(item.remaining_user_id)}
-              >
-                <div className="conversation-avatar">
-                  <div className="avatar"></div>
-                </div>
-                <div className="conversation-content">
-                  <div className="conversation-name">
-                    {item.remaining_user_fullname}
-                  </div>
-                  <div
-                    className={
-                      item.remaining_user_id === item.message_user_id &&
-                      item.is_seen === 0
-                        ? "conversation-message not_seen"
-                        : "conversation-message"
-                    }
-                  >
-                    {item.message}
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-      <div className="container-chat d-none">
-        <div className="chat-header">
-          <div className="chat-avatar">
-            <div className="avatar"></div>
-          </div>
-          <div className="chat-name">{conversation_data.fullname}</div>
-        </div>
-        <div className="chat-content">
-          {messages.message.map((item) => {
-            console.log(messages);
-            console.log(socketInstance.socket.id);
-            // const isMyMessage = messages.socketID
-            //   ? messages.socketID === socketInstance.socket.id
-            //     ? true
-            //     : false
-            //   : item.user_id === messages.user_id
-            //   ? true
-            //   : false;
-            const isMyMessage =
-              item.socketID !== undefined
-                ? item.socketID === socketInstance.socket.id
-                  ? true
-                  : false
-                : item.user_id === messages.user_id
-                ? true
-                : false;
-            if (!isMyMessage) {
+          <div className="container-list-user d-none">
+            {user_data.map((item) => {
               return (
-                <div key={item.id} className="Other-message">
-                  <div className="avatar"></div>
+                <div
+                  key={item.id}
+                  className="user"
+                  onClick={() => click_converstion(item.id)}
+                >
+                  <div className="user-avatar">
+                    <div className="avatar"></div>
+                  </div>
+                  <div className="user-name">
+                    <div className="name">{item.fullname}</div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          <div className="container-conversations " data-spy="scroll">
+            {list_conversation.map((item) => {
+              console.log(item);
+              return (
+                <div
+                  key={item.remaining_user_id}
+                  className="conversation"
+                  onClick={() => click_converstion(item.remaining_user_id)}
+                >
+                  <div className="conversation-avatar">
+                    <div className="avatar"></div>
+                  </div>
+                  <div className="conversation-content">
+                    <div className="conversation-name">
+                      {item.remaining_user_fullname}
+                    </div>
+                    <div
+                      className={
+                        item.remaining_user_id === item.message_user_id &&
+                        item.is_seen === 0
+                          ? "conversation-message not_seen"
+                          : "conversation-message"
+                      }
+                    >
+                      {item.message}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+        <div className="container-chat d-none">
+          <div className="chat-header">
+            <div className="chat-avatar">
+              <div className="avatar"></div>
+            </div>
+            <div className="chat-name">{conversation_data.fullname}</div>
+          </div>
+          <div className="chat-content">
+            {messages.message.map((item) => {
+              console.log(messages);
+              console.log(socketInstance.socket.id);
+              // const isMyMessage = messages.socketID
+              //   ? messages.socketID === socketInstance.socket.id
+              //     ? true
+              //     : false
+              //   : item.user_id === messages.user_id
+              //   ? true
+              //   : false;
+              const isMyMessage =
+                item.socketID !== undefined
+                  ? item.socketID === socketInstance.socket.id
+                    ? true
+                    : false
+                  : item.user_id === messages.user_id
+                  ? true
+                  : false;
+              if (!isMyMessage) {
+                return (
+                  <div key={item.id} className="Other-message">
+                    <div className="avatar"></div>
+                    <div className="message">{item.message}</div>
+                  </div>
+                );
+              }
+              return (
+                <div key={item.id} className="My-message">
                   <div className="message">{item.message}</div>
                 </div>
               );
-            }
-            return (
-              <div key={item.id} className="My-message">
-                <div className="message">{item.message}</div>
-              </div>
-            );
-          })}
+            })}
+          </div>
+          <div className="chat-input">
+            <div className="container-input">
+              <input className="input-message" placeholder="Aa" />
+              <button className="send-message" onClick={() => sendMsg()}>
+                <i className="bi bi-send"></i>
+              </button>
+            </div>
+          </div>
         </div>
-        <div className="chat-input">
-          <div className="container-input">
-            <input className="input-message" placeholder="Aa" />
-            <button className="send-message" onClick={() => sendMsg()}>
-              <i className="bi bi-send"></i>
-            </button>
-            {/* <button
-              onClick={() => {
-                disconerstion();
-              }}
-            >
-              DIs
-            </button>
-            <button
-              onClick={() => {
-                socket.connect();
-              }}
-            >
-              con
-            </button> */}
+        <div className="container-welcome">
+          <div className="welcome">
+            <div className="welcome-title">Welcome to my project</div>
+            <div className="welcome-content">
+              This is a project that I have been working on for a long time. I
+              hope you will have a great experience when using it.
+            </div>
           </div>
         </div>
       </div>
-      <div className="container-welcome">
-        <div className="welcome">
-          <div className="welcome-title">Welcome to my project</div>
-          <div className="welcome-content">
-            This is a project that I have been working on for a long time. I
-            hope you will have a great experience when using it.
-          </div>
-        </div>
-      </div>
-    </div>
+    </>
   );
 };
 
