@@ -26,6 +26,7 @@ export const create_conversation = (user_two) => {
     }
     console.log(get_user);
     const fullname = get_user.data.data.fullname;
+    console.log("csrf", getCsrfToken());
     await axios
       .post("/create-conversation", { user_two, _csrf: getCsrfToken() })
       .then((res) => {
