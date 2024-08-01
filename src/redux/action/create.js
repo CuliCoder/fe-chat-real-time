@@ -26,9 +26,13 @@ export const create_conversation = (user_two) => {
     }
     console.log(get_user);
     const fullname = get_user.data.data.fullname;
-    console.log("csrf", getCsrfToken());
+    const get_csrf = await getCsrfToken();
+    if(get_csrf.status !== 200) {
+      return;
+    }
+    // console.log(get_csrf);
     await axios
-      .post("/create-conversation", { user_two, _csrf: getCsrfToken() })
+      .post("/create-conversation", { user_two, _csrf: get_csrf.data.csrfToken })
       .then((res) => {
         const conversation_id = res.data.data.id;
         dispatch(
