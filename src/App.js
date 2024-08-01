@@ -23,7 +23,7 @@ function App() {
     useSelector((state) => state.get_list_conversation.loading),
     useSelector((state) => state.create_conversation.loading),
   ]);
-  const is_loading = useSelector((state) => state.checkStatusLogin.loading);
+  const is_loading = useSelector((state) => state.statusLogin.loading);
   console.log(loading);
   // useEffect(() => {
   //   loading.forEach((item) => {
