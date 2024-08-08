@@ -76,7 +76,7 @@ const Home = () => {
     }, 500);
   };
   const show_container_chat = () => {
-    if (document.querySelector(".container-chat").classList.contains("d-none"))
+    if (!document.querySelector(".container-chat").classList.contains("d-none"))
       return;
     document.querySelector(".container-chat").classList.remove("d-none");
     document.querySelector(".container-welcome").classList.add("d-none");
