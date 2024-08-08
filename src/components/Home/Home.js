@@ -21,6 +21,7 @@ const Home = () => {
   const timeoutRef = useRef(null);
   const [socketInstance, setSocketInstance] = useState(null);
   const messages = useSelector((state) => state.message.data);
+  const message_loading = useSelector((state) => state.message.loading);
   const conversation_data = useSelector(
     (state) => state.create_conversation.data
   );
@@ -126,7 +127,8 @@ const Home = () => {
         loading_find_user ||
         loading_get_list_conversation ||
         loading_connectIO ||
-        conversation.loading) && <Spinner />}
+        conversation.loading ||
+        message_loading) && <Spinner />}
       <div className="container-home">
         <Nav />
         <div className="container-list">
