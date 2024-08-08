@@ -6,8 +6,6 @@ const instance = axios.create({
     Accept: "application/json",
   },
 });
-// instance.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
-// instance.defaults.headers.common["X-CSRF-Token"] = getCsrfToken();
 instance.interceptors.request.use(
   (config) => {
     // Do something before request is sent
@@ -44,6 +42,10 @@ instance.interceptors.response.use(
         instance
           .post("/refresh-token")
           .then((response) => {
+            if(response.status !== 200) {
+              window.location.href = "/Login";
+              reject(response);
+            }
             resolve(instance(error.config));
           })
           .catch((error) => {

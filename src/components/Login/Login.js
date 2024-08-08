@@ -10,7 +10,7 @@ import login from "../../redux/action/login";
 import checkStatusLogin from "../../redux/action/statusLogin";
 import Spinner from "../Spinner/Spinner";
 const Login = () => {
-  const navigate = useNavigate();
+  console.log("Login");
   const dispatch = useDispatch();
   const [infor, setInfor] = useState({
     account: "",
@@ -33,9 +33,34 @@ const Login = () => {
       toast.error(Object.values(error)[0]);
     }
   }, [error]);
+  const handleLoginWithFacebook = () => {
+    window.FB.login(
+      function (response) {
+        if (response.authResponse) {
+          console.log("Welcome!  Fetching your information.... ");
+          window.FB.api(
+            "/me",
+            {
+              fields: "id,name,email,picture,birthday,gender,middle_name,last_name,first_name,education",
+              access_token: response.authResponse.accessToken,
+            },
+
+            function (response) {
+              console.log(response);
+            }
+          );
+          console.log(response);
+        } else {
+          console.log("User cancelled login or did not fully authorize.");
+        }
+      },
+      { scope: "public_profile,email", return_scopes: true }
+    );
+  };
   return (
     <>
       {loading && <Spinner />}
+
       <div className="login-container">
         <div className="container vh-100 d-flex align-items-center justify-content-center">
           <div className="row col-12">
@@ -70,6 +95,9 @@ const Login = () => {
                 value={infor.password}
                 onChange={changInfor}
               />
+              <button onClick={handleLoginWithFacebook}>
+                Login with facebook
+              </button>
               <button
                 type="submit"
                 className="btn btn-primary fw-bold "

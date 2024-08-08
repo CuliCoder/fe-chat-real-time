@@ -1,17 +1,41 @@
 import "./Home.scss";
-import React, { useEffect, useState, memo } from "react";
+import React, { useEffect, useState, memo, useRef } from "react";
 import Nav from "../Navigation/Nav";
 import { useSelector, useDispatch } from "react-redux";
 import { find_user, find_user_Close } from "../../redux/action/find";
-import { create_conversation } from "../../redux/action/create";
+import {
+  create_conversation,
+  update_list_Conversation_at_home,
+} from "../../redux/action/conversation";
 import { load_all_Message, new_Message } from "../../redux/action/message";
 import { toast } from "react-toastify";
 import socket from "../../services/configSocketIO";
-import { list_Conversation } from "../../redux/action/conversation";
+import {
+  get_list_Conversation_at_home,
+  get_list_Conversation_found,
+} from "../../redux/action/conversation";
 import Spinner from "../Spinner/Spinner";
 import { loading_request, finish_request } from "../../redux/action/loading";
 const Home = () => {
+  console.log("Home");
+  const timeoutRef = useRef(null);
   const [socketInstance, setSocketInstance] = useState(null);
+  const messages = useSelector((state) => state.message.data);
+  const conversation_data = useSelector(
+    (state) => state.create_conversation.data
+  );
+
+  const loading_creat_conversation = useSelector(
+    (state) => state.create_conversation.loading
+  );
+  const loading_find_user = useSelector((state) => state.find_user.loading);
+  const loading_get_list_conversation = useSelector(
+    (state) => state.get_list_conversation.loading
+  );
+  const loading_connectIO = useSelector((state) => state.loading.loading);
+  const conversation = useSelector((state) => state.conversation);
+
+  const dispatch = useDispatch();
   useEffect(() => {
     const initSocket = async () => {
       dispatch(loading_request());
@@ -21,22 +45,9 @@ const Home = () => {
       dispatch(finish_request());
     };
     initSocket();
+    dispatch(get_list_Conversation_at_home());
   }, []);
-  const user_data = useSelector((state) => state.find_user.data);
-  const messages = useSelector((state) => state.message.data);
-  const conversation_data = useSelector(
-    (state) => state.create_conversation.data
-  );
-  const list_conversation = useSelector((state) => state.conversation.data);
-  const loading_creat_conversation = useSelector(
-    (state) => state.create_conversation.loading
-  );
-  const loading_find_user = useSelector((state) => state.find_user.loading);
-  const loading_get_list_conversation = useSelector(
-    (state) => state.get_list_conversation.loading
-  );
-  const loading_connectIO = useSelector((state) => state.loading.loading);
-  const dispatch = useDispatch();
+
   useEffect(() => {
     if (!socketInstance) return;
     socketInstance.handle_new_message((msg_data, user_id) => {
@@ -48,17 +59,21 @@ const Home = () => {
     socketInstance.handle_notification((message) => {
       toast.info(message);
     });
-    socketInstance.handle_get_new_mes_of_list_conversation((data) => {
-      dispatch(list_Conversation(data));
+    socketInstance.handle_get_list_conversations_at_home((data) => {
+      dispatch(update_list_Conversation_at_home(data));
     });
     socketInstance.handle_disconnect(() => {
       console.log("disconnect");
     });
-    socketInstance.req_get_new_message_of_list_conversation();
   }, [socketInstance]);
-  
+
   const change_find = (e) => {
-    dispatch(find_user(e.target.value));
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    timeoutRef.current = setTimeout(() => {
+      dispatch(get_list_Conversation_found(e.target.value));
+    }, 500);
   };
   const show_container_chat = () => {
     document.querySelector(".container-chat").classList.remove("d-none");
@@ -69,10 +84,16 @@ const Home = () => {
     dispatch(create_conversation(id));
   };
   useEffect(() => {
-    if (Object.keys(conversation_data).length !== 0) {
-      socketInstance.req_join_rom(conversation_data.conversation_id);
+    if (Object.keys(conversation.data.conversation_current).length !== 0) {
+      socketInstance.req_join_rom({
+        conversation_id: conversation.data.conversation_current.conversation_id,
+        user_two: conversation.data.conversation_current.user_two,
+      });
+      dispatch(
+        load_all_Message(conversation.data.conversation_current.conversation_id)
+      );
     }
-  }, [conversation_data]);
+  }, [conversation]);
   const focus_search = () => {
     document.querySelector(".btn-close-list-user").classList.remove("d-none");
     document.querySelector(".container-conversations").classList.add("d-none");
@@ -93,15 +114,17 @@ const Home = () => {
     if (message === "") {
       return;
     }
-    socketInstance.req_send_message(message, conversation_data);
+    socketInstance.req_send_message(message);
     document.querySelector(".input-message").value = "";
   };
+
   return (
     <>
-      {(loading_find_user ||
+      {(loading_creat_conversation ||
+        loading_find_user ||
         loading_get_list_conversation ||
         loading_connectIO ||
-        loading_creat_conversation) && <Spinner />}
+        conversation.loading) && <Spinner />}
       <div className="container-home">
         <Nav />
         <div className="container-list">
@@ -126,7 +149,7 @@ const Home = () => {
             </button>
           </div>
           <div className="container-list-user d-none">
-            {user_data.map((item) => {
+            {conversation.data.conservations_found.map((item) => {
               return (
                 <div
                   key={item.id}
@@ -144,7 +167,7 @@ const Home = () => {
             })}
           </div>
           <div className="container-conversations " data-spy="scroll">
-            {list_conversation.map((item) => {
+            {conversation.data.conversations_at_home.map((item) => {
               return (
                 <div
                   key={item.remaining_user_id}
@@ -182,7 +205,7 @@ const Home = () => {
             <div className="chat-name">{conversation_data.fullname}</div>
           </div>
           <div className="chat-content">
-            {messages.message.map((item) => {
+            {messages.messages.map((item) => {
               const isMyMessage =
                 item.socketID !== undefined
                   ? item.socketID === socketInstance.socket.id

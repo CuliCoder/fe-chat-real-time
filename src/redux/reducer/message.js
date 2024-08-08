@@ -1,8 +1,8 @@
-import { new_message, load_all_message } from "../action/message";
+import { new_message, load_all_message_success } from "../action/message";
 
 const initialState = {
   data: {
-    message: [],
+    messages: [],
     user_id: null,
   },
 };
@@ -12,15 +12,15 @@ const message_reducer = (state = initialState, action) => {
       return {
         ...state,
         data: {
-          message: [action.message, ...state.data.message],
+          messages: [action.message, ...state.data.messages],
           user_id: state.data.user_id,
         },
       };
-    case load_all_message:
+    case load_all_message_success:
       return {
         ...state,
         data: {
-          message: action.data.message.reverse(),
+          messages: action.data.messages.reverse(),
           user_id: action.data.user_id,
         },
       };

@@ -6,9 +6,9 @@ import register from "../../redux/action/register";
 import { toast } from "react-toastify";
 import Spinner from "../Spinner/Spinner";
 const Signup = () => {
+  console.log("Signup");
   const loading = useSelector((state) => state.register.loading);
   const error = useSelector((state) => state.register.error);
-  const success = useSelector((state) => state.register.success);
   const dispatch = useDispatch();
   const [infor, setInfor] = useState({
     emailOrtel: "",

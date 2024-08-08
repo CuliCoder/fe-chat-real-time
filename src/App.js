@@ -31,7 +31,7 @@ function App() {
             path="/Login"
             element={is_Login ? <Navigate to="/" /> : <Login />}
           />
-          <Route path="/home" element={<Home />} />
+          {/* <Route path="/home" element={<Home />} /> */}
           <Route path="*" element={<h1>404 not found</h1>}></Route>
         </Route>
       </Routes>

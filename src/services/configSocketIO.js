@@ -35,9 +35,9 @@ class Socket {
       callback();
     });
   }
-  handle_get_new_mes_of_list_conversation(callback) {
+  handle_get_list_conversations_at_home(callback) {
     if (!this.socket) return;
-    this.socket.on("get new message of list conversation", (data) => {
+    this.socket.on("get list conversations at home", (data) => {
       callback(data);
     });
   }
@@ -45,7 +45,6 @@ class Socket {
     if (!this.socket) return;
     this.socket.on("notification", (message) => {
       callback(message);
-      this.socket.emit("get new message of list conversation");
     });
   }
   handle_room(conversation_id) {
@@ -53,17 +52,18 @@ class Socket {
     this.socket.emit("room", conversation_id);
     console.log("join room");
   }
-  req_get_new_message_of_list_conversation() {
+  // req_get_list_conversations_at_home() {
+  //   if (!this.socket) return;
+  //   this.socket.emit("get list conversations at home");
+  // }
+  req_join_rom(conversation) {
     if (!this.socket) return;
-    this.socket.emit("get new message of list conversation");
+    this.socket.emit("room", conversation);
   }
-  req_join_rom(conversation_id) {
+  req_send_message(message) {
     if (!this.socket) return;
-    this.socket.emit("room", conversation_id);
-  }
-  req_send_message(message, conversation_data) {
-    if (!this.socket) return;
-    this.socket.emit("send message", { message, conversation_data });
+    this.socket.emit("send message", message);
+    // this.socket.emit("get list conversations at home");
   }
 }
 // const socket = io("http://localhost:8080", {
