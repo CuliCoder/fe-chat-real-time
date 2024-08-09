@@ -12,28 +12,31 @@ import { useDispatch, useSelector } from "react-redux";
 import Spinner from "./components/Spinner/Spinner";
 function App() {
   const dispatch = useDispatch();
-  const is_Login = useSelector((state) => state.statusLogin.isLogin);
-  const is_loading = useSelector((state) => state.statusLogin.loading);
+  const loginStatus = useSelector((state) => state.statusLogin);
+  const [isLogin, setIsLogin] = useState(null);
   useEffect(() => {
     dispatch(checkStatusLogin());
   }, []);
+  useEffect(() => {
+    setIsLogin(loginStatus.isLogin);
+  }, [loginStatus.isLogin]);
+  if (isLogin === null || loginStatus.loading) {
+    return <Spinner />;
+  }
   return (
     <BrowserRouter>
-      {is_loading && <Spinner />}
       <Routes>
-        <Route>
-          <Route
-            exact
-            path="/"
-            element={is_Login ? <Home /> : <Navigate to="/Login" />}
-          />
-          <Route
-            path="/Login"
-            element={is_Login ? <Navigate to="/" /> : <Login />}
-          />
-          {/* <Route path="/home" element={<Home />} /> */}
-          <Route path="*" element={<h1>404 not found</h1>}></Route>
-        </Route>
+        <Route
+          exact
+          path="/"
+          element={loginStatus.isLogin ? <Home /> : <Navigate to="/Login" />}
+        />
+        <Route
+          path="/Login"
+          element={loginStatus.isLogin ? <Navigate to="/" /> : <Login />}
+        />
+        {/* <Route path="/home" element={<Home />} /> */}
+        <Route path="*" element={<h1>404 not found</h1>}></Route>
       </Routes>
 
       <ToastContainer
