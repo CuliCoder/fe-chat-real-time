@@ -1,6 +1,4 @@
-import { load } from "react-cookies";
 import { new_message, load_all_message_success,message_loading } from "../action/message";
-import { loading } from "../action/loading";
 
 const initialState = {
   loading: false,

@@ -1,6 +1,9 @@
 import "./Home.scss";
-import React, { useEffect, useState, memo, useRef } from "react";
+import React, { useEffect, useState, memo, useRef, useCallback } from "react";
 import Nav from "../Navigation/Nav";
+import Conversation_at_home from "../Conversation/Conversation_at_home";
+import Conversation_found from "../Conversation/Conversation_found";
+import Chat from "../Chat/Chat";
 import { useSelector, useDispatch } from "react-redux";
 import { find_user, find_user_Close } from "../../redux/action/find";
 import {
@@ -47,6 +50,7 @@ const Home = () => {
     };
     initSocket();
     dispatch(get_list_Conversation_at_home());
+    console.log("init");
   }, []);
 
   useEffect(() => {
@@ -82,10 +86,11 @@ const Home = () => {
     document.querySelector(".container-chat").classList.remove("d-none");
     document.querySelector(".container-welcome").classList.add("d-none");
   };
-  const click_converstion = (id) => {
+
+  const click_converstion = useCallback((id) => {
     show_container_chat();
     dispatch(create_conversation(id));
-  };
+  }, []);
   useEffect(() => {
     if (Object.keys(conversation.data.conversation_current).length !== 0) {
       socketInstance.req_join_rom({
@@ -96,7 +101,7 @@ const Home = () => {
         load_all_Message(conversation.data.conversation_current.conversation_id)
       );
     }
-  }, [conversation]);
+  }, [conversation.data.conversation_current]);
   const focus_search = () => {
     document.querySelector(".btn-close-list-user").classList.remove("d-none");
     document.querySelector(".container-conversations").classList.add("d-none");
@@ -112,15 +117,14 @@ const Home = () => {
     document.querySelector(".container-list-user").classList.add("d-none");
   };
 
-  const sendMsg = () => {
+  const sendMsg = useCallback(() => {
     const message = document.querySelector(".input-message").value;
     if (message === "") {
       return;
     }
     socketInstance.req_send_message(message);
     document.querySelector(".input-message").value = "";
-  };
-
+  }, [socketInstance]);
   return (
     <>
       {(loading_creat_conversation ||
@@ -152,96 +156,22 @@ const Home = () => {
               Close
             </button>
           </div>
-          <div className="container-list-user d-none">
-            {conversation.data.conservations_found.map((item) => {
-              return (
-                <div
-                  key={item.id}
-                  className="user"
-                  onClick={() => click_converstion(item.id)}
-                >
-                  <div className="user-avatar">
-                    <div className="avatar"></div>
-                  </div>
-                  <div className="user-name">
-                    <div className="name">{item.fullname}</div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-          <div className="container-conversations " data-spy="scroll">
-            {conversation.data.conversations_at_home.map((item) => {
-              return (
-                <div
-                  key={item.remaining_user_id}
-                  className="conversation"
-                  onClick={() => click_converstion(item.remaining_user_id)}
-                >
-                  <div className="conversation-avatar">
-                    <div className="avatar"></div>
-                  </div>
-                  <div className="conversation-content">
-                    <div className="conversation-name">
-                      {item.remaining_user_fullname}
-                    </div>
-                    <div
-                      className={
-                        item.remaining_user_id === item.message_user_id &&
-                        item.is_seen === 0
-                          ? "conversation-message not_seen"
-                          : "conversation-message"
-                      }
-                    >
-                      {item.message}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+          <Conversation_found
+            list_conversations={conversation.data.conservations_found}
+            click_converstion={click_converstion}
+          />
+          <Conversation_at_home
+            list_conversations={conversation.data.conversations_at_home}
+            click_converstion={click_converstion}
+          />
         </div>
-        <div className="container-chat d-none">
-          <div className="chat-header">
-            <div className="chat-avatar">
-              <div className="avatar"></div>
-            </div>
-            <div className="chat-name">{conversation_data.fullname}</div>
-          </div>
-          <div className="chat-content">
-            {messages.messages.map((item) => {
-              const isMyMessage =
-                item.socketID !== undefined
-                  ? item.socketID === socketInstance.socket.id
-                    ? true
-                    : false
-                  : item.user_id === messages.user_id
-                  ? true
-                  : false;
-              if (!isMyMessage) {
-                return (
-                  <div key={item.id} className="Other-message">
-                    <div className="avatar"></div>
-                    <div className="message">{item.message}</div>
-                  </div>
-                );
-              }
-              return (
-                <div key={item.id} className="My-message">
-                  <div className="message">{item.message}</div>
-                </div>
-              );
-            })}
-          </div>
-          <div className="chat-input">
-            <div className="container-input">
-              <input className="input-message" placeholder="Aa" />
-              <button className="send-message" onClick={() => sendMsg()}>
-                <i className="bi bi-send"></i>
-              </button>
-            </div>
-          </div>
-        </div>
+        <Chat
+          fullname={conversation_data.fullname}
+          messages={messages.messages}
+          socketID={socketInstance ? socketInstance.socket.id : null}
+          user_id={messages.user_id}
+          sendMsg={sendMsg}
+        />
         <div className="container-welcome">
           <div className="welcome">
             <div className="welcome-title">Welcome to my project</div>

@@ -1,0 +1,39 @@
+.container-list-user{
+    height: 90%;
+    border-top: 1px solid rgb(230, 227, 227);
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    .user{
+      padding: 10px 0 10px 0;
+      width: 100%;
+      display: flex;
+      gap: 10px;
+      .user-avatar{
+        width: 20%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .avatar{
+          background-color: rgb(17, 11, 11);
+          width: 45px;
+          height: 45px;
+          border-radius: 50%;
+        }
+      }
+      .user-name{
+        width: 80%;
+        display: flex;
+        align-items: center;
+        .name{
+          font-size: 1.2rem;
+          font-weight: bold;
+        }
+      }
+    }
+    :hover{
+      cursor: pointer;
+      background-color: rgb(241, 241, 241);
+    }
+  }

@@ -82,55 +82,55 @@
         background-color: rgb(241, 241, 241);
       }
     }
-    .container-conversations {
-      height: 90%;
-      border-top: 1px solid rgb(230, 227, 227);
-      gap: 10px;
-      display: flex;
-      flex-direction: column;
-      overflow-y: scroll;
-      .conversation {
-        display: flex;
-        gap: 10px;
-        padding: 10px 0 10px 0;
-        .conversation-avatar {
-          width: 20%;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          .avatar {
-            background-color: rgb(17, 11, 11);
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-          }
-        }
-        .conversation-content {
-          width: 80%;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          .conversation-name {
-            font-size: 1.2rem;
-            font-weight: bold;
-          }
-          .conversation-message {
-            font-size: 1rem;
-            color: rgb(128, 128, 128);
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-          }
-          .not_seen{
-            color: black;
-          }
-        }
-      }
-      :hover{
-        cursor: pointer;
-        background-color: rgb(241, 241, 241);
-      }
-    }
+    // .container-conversations {
+    //   height: 90%;
+    //   border-top: 1px solid rgb(230, 227, 227);
+    //   gap: 10px;
+    //   display: flex;
+    //   flex-direction: column;
+    //   overflow-y: scroll;
+    //   .conversation {
+    //     display: flex;
+    //     gap: 10px;
+    //     padding: 10px 0 10px 0;
+    //     .conversation-avatar {
+    //       width: 20%;
+    //       display: flex;
+    //       justify-content: center;
+    //       align-items: center;
+    //       .avatar {
+    //         background-color: rgb(17, 11, 11);
+    //         width: 45px;
+    //         height: 45px;
+    //         border-radius: 50%;
+    //       }
+    //     }
+    //     .conversation-content {
+    //       width: 80%;
+    //       display: flex;
+    //       flex-direction: column;
+    //       justify-content: center;
+    //       .conversation-name {
+    //         font-size: 1.2rem;
+    //         font-weight: bold;
+    //       }
+    //       .conversation-message {
+    //         font-size: 1rem;
+    //         color: rgb(128, 128, 128);
+    //         overflow: hidden;
+    //         white-space: nowrap;
+    //         text-overflow: ellipsis;
+    //       }
+    //       .not_seen{
+    //         color: black;
+    //       }
+    //     }
+    //   }
+    //   :hover{
+    //     cursor: pointer;
+    //     background-color: rgb(241, 241, 241);
+    //   }
+    // }
   }
   .container-chat {
     width: 80%;

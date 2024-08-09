@@ -52,10 +52,6 @@ class Socket {
     this.socket.emit("room", conversation_id);
     console.log("join room");
   }
-  // req_get_list_conversations_at_home() {
-  //   if (!this.socket) return;
-  //   this.socket.emit("get list conversations at home");
-  // }
   req_join_rom(conversation) {
     if (!this.socket) return;
     this.socket.emit("room", conversation);
@@ -63,21 +59,6 @@ class Socket {
   req_send_message(message) {
     if (!this.socket) return;
     this.socket.emit("send message", message);
-    // this.socket.emit("get list conversations at home");
   }
 }
-// const socket = io("http://localhost:8080", {
-//   withCredentials: true,
-//   'force new connection': true,
-// });
-// export const handle_new_message = (callback) => {
-//   socket.on("receive message", (msg_data, user_id) => {
-//     callback(msg_data, user_id);
-//   });
-// };
-// export const handle_load_all_message_in_room = (callback) => {
-//   socket.on("load all message in room", (msg_data, user_id) => {
-//     callback(msg_data,user_id);
-//   });
-// };
 export default Socket;
