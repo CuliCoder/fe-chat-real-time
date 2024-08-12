@@ -1,6 +1,7 @@
 import "./Home.scss";
 import React, { useEffect, useState, memo, useRef, useCallback } from "react";
 import Nav from "../Navigation/Nav";
+import { Option } from "../Option/Option";
 import Conversation_at_home from "../Conversation/Conversation_at_home";
 import Conversation_found from "../Conversation/Conversation_found";
 import Chat from "../Chat/Chat";
@@ -19,6 +20,7 @@ import {
 } from "../../redux/action/conversation";
 import Spinner from "../Spinner/Spinner";
 import { loading_request, finish_request } from "../../redux/action/loading";
+import Logout from "../../redux/action/logout";
 const Home = () => {
   console.log("Home");
   const timeoutRef = useRef(null);
@@ -125,6 +127,12 @@ const Home = () => {
     socketInstance.req_send_message(message);
     document.querySelector(".input-message").value = "";
   }, [socketInstance]);
+  const log_out = () => {
+    dispatch(Logout());
+  };
+  const Open_Option = useCallback(() => {
+    document.querySelector(".Option-container").classList.toggle("d-none");
+  }, []);
   return (
     <>
       {(loading_creat_conversation ||
@@ -134,7 +142,8 @@ const Home = () => {
         conversation.loading ||
         message_loading) && <Spinner />}
       <div className="container-home">
-        <Nav />
+        <Nav Open_Option={Open_Option} />
+        <Option Logout={log_out} />
         <div className="container-list">
           <div className="container-search">
             <div className="search-place">

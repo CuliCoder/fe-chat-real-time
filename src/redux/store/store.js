@@ -10,6 +10,7 @@ import { create_conversation_reducer } from "../reducer/create";
 import message_reducer from "../reducer/message";
 import conservation_reducer from "../reducer/conversation";
 import loading_reducer from "../reducer/loading";
+import logout from "../reducer/logout";
 const rootReducer = combineReducers({
   register: register_Reducer,
   login: login_Reducer,
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
   message: message_reducer,
   conversation: conservation_reducer,
   loading: loading_reducer,
+  logout: logout,
 });
 const asyncMiddleware = (store) => (next) => (action) => {
   if (typeof action === "function") {

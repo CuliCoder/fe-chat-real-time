@@ -26,7 +26,6 @@ const Login = () => {
   };
   useEffect(() => {
     if (error.success) {
-      toast.success(error.success);
       dispatch(checkStatusLogin());
     } else {
       toast.error(Object.values(error)[0]);
@@ -40,7 +39,8 @@ const Login = () => {
           window.FB.api(
             "/me",
             {
-              fields: "id,name,email,picture,birthday,gender,middle_name,last_name,first_name,education",
+              fields:
+                "id,name,email,picture,birthday,gender,middle_name,last_name,first_name,education",
               access_token: response.authResponse.accessToken,
             },
 
