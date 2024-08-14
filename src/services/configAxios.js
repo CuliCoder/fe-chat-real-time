@@ -29,8 +29,8 @@ instance.interceptors.response.use(
     if (
       error.config.url === "/refresh-token" ||
       error.config.url === "/login" ||
-      error.config.url === "/create-user" ||
-      error.config.url === "/is-login"
+      error.config.url === "/create-user" 
+      // error.config.url === "/is-login"
     ) {
       return Promise.reject(error);
     }
@@ -42,14 +42,10 @@ instance.interceptors.response.use(
         instance
           .post("/refresh-token")
           .then((response) => {
-            if(response.status !== 200) {
-              window.location.href = "/Login";
-              reject(response);
-            }
             resolve(instance(error.config));
           })
           .catch((error) => {
-            window.location.href = "/Login";
+            // window.location.href = "/ccc";
             reject(error);
           });
       });
