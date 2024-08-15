@@ -21,6 +21,7 @@ import {
 import Spinner from "../Spinner/Spinner";
 import { loading_request, finish_request } from "../../redux/action/loading";
 import Logout from "../../redux/action/logout";
+import { set } from "lodash";
 const Home = () => {
   console.log("Home");
   const timeoutRef = useRef(null);
@@ -68,6 +69,12 @@ const Home = () => {
     });
     socketInstance.handle_get_list_conversations_at_home((data) => {
       dispatch(update_list_Conversation_at_home(data));
+    });
+    socketInstance.handle_account_logged_another_device(() => {
+      toast.error("Account logged in another device");
+      setTimeout(() => {
+        dispatch(Logout());
+      }, 1000);
     });
     socketInstance.handle_disconnect(() => {
       console.log("disconnect");

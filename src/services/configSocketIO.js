@@ -52,6 +52,12 @@ class Socket {
     this.socket.emit("room", conversation_id);
     console.log("join room");
   }
+  handle_account_logged_another_device(callback) {
+    if (!this.socket) return;
+    this.socket.on("account logged in another device", () => {
+      callback();
+    });
+  }
   req_join_rom(conversation) {
     if (!this.socket) return;
     this.socket.emit("room", conversation);
