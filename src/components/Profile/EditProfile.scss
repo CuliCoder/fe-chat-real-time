@@ -1,0 +1,36 @@
+.modal-header {
+  .btn-back {
+    border: none;
+    background-color: white;
+    img {
+      width: 30px;
+      border-radius: 50%;
+    }
+  }
+}
+.edit-profile-page {
+  * {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .title-Personal-information {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  .gender {
+    margin-bottom: 10px;
+    .radio-container {
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+      * {
+        display: flex;
+        flex-direction: row;
+        gap: 5px;
+        align-items: center;
+      }
+    }
+  }
+}
+

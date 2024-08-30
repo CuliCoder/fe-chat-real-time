@@ -7,7 +7,6 @@ import { toast } from "react-toastify";
 import Spinner from "../Spinner/Spinner";
 const Signup = () => {
   console.log("Signup");
-  const loading = useSelector((state) => state.register.loading);
   const error = useSelector((state) => state.register.error);
   const dispatch = useDispatch();
   const [infor, setInfor] = useState({
@@ -66,7 +65,6 @@ const Signup = () => {
 
   return (
     <>
-      {loading && <Spinner />}
       <form id="form_signup">
         <div className="modal fade " id="SignUpModal">
           <div className="modal-dialog modal-dialog-center">
@@ -184,7 +182,7 @@ const Signup = () => {
                           ? "form-check-input fs-6 "
                           : "form-check-input fs-6 is-invalid"
                       }
-                      name="gender"
+                      name="gender" 
                       value="Female"
                       onChange={changInfor}
                       required

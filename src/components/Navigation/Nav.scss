@@ -3,7 +3,9 @@
 .topnav {
   background-color: #4920ff;
   height: 100vh;
-  width: 4%;
+  padding: 10px 10px 0 10px;
+  max-width: 60px;
+  min-width: 60px;
   .container-avatar {
     display: flex;
     justify-content: center;
@@ -12,7 +14,7 @@
     .avatar {
       width: 40px;
       height: 40px;
-      background-color: aliceblue;
+      // background-color: aliceblue;
       border-radius: 50%;
     }
   }

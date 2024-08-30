@@ -10,14 +10,16 @@ const login_request_action = () => {
     loading: true,
   };
 };
-const login_success_action = (error) => {
+export const login_success_action = (error) => {
+  toast.success(Object.values(error)[0]);
   return {
     type: login_success,
     loading: false,
     error,
   };
 };
-const login_failed_action = (error) => {
+export const login_failed_action = (error) => {
+  toast.error(Object.values(error)[0]);
   return {
     type: login_failed,
     loading: false,

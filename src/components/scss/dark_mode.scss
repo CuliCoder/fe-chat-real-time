@@ -1,0 +1,91 @@
+.btn-A-dark-mode {
+  background-color: #28a745;
+  color: #ffffff;
+  border: none;
+}
+.btn-A-dark-mode:hover {
+  background-color: #218838;
+}
+.btn-B-dark-mode {
+  background-color: #dc3545;
+  color: #ffffff;
+  border: none;
+}
+.btn-B-dark-mode:hover {
+  background-color: #c82333;
+}
+.btn-normal {
+  background-color: #495057;
+}
+.btn-normal:hover {
+  background-color: #6c757d;
+}
+.normal-hover {
+  background-color: #6c757d;
+}
+.bg-dark-mode {
+  background-color: #212529;
+}
+.nav-dark-mode {
+  background-color: #343a40;
+}
+.text-dark-mode {
+  color: #ffffff;
+}
+.input-dark-mode {
+  background-color: #495057;
+  color: #ffffff;
+}
+.input-dark-mode:focus {
+  background-color: #495057;
+  color: #ffffff;
+  border-color: #6c757d;
+}
+.dark-mode {
+  background-color: #212529;
+  * {
+    color: #ffffff;
+  }
+  input {
+    background-color: #495057;
+    color: #ffffff;
+  }
+  input:focus {
+    background-color: #495057;
+    color: #ffffff;
+    border-color: #6c757d;
+  }
+  .btn-primary {
+    background-color: #28a745;
+    color: #ffffff;
+    border: none;
+  }
+  .btn-primary:hover {
+    background-color: #218838;
+  }
+  .btn-secondary {
+    background-color: #dc3545;
+    color: #ffffff;
+    border: none;
+  }
+  .btn-secondary:hover {
+    background-color: #c82333;
+  }
+  .Option-container,
+  .btn-back,
+  .topnav,
+  .profile-page,
+  .edit-page,
+  .update-avt-page {
+    .list-option :hover {
+      background-color: #6c757d;
+    }
+    .btn-upload-avt {
+      background-color: #495057;
+    }
+    .btn-upload-avt:hover {
+      background-color: #6c757d;
+    }
+    background-color: #343a40;
+  }
+}

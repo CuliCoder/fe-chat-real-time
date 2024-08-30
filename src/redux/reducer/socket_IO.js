@@ -1,4 +1,4 @@
-import { loading, finish } from "../action/loading";
+import { loading, finish } from "../action/socket_IO";
 const initialState = {
   loading: false,
 };

@@ -1,0 +1,42 @@
+.update-avt-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    input{
+        display: none;
+    }
+    button:hover{
+        background-color: #f1f1f1;
+    }
+    button{
+        display: flex;
+        background-color: white;
+        border: none;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        padding: 10px 0 10px 0;
+        border-radius: 5px;
+        img{
+            width: 30px;
+        }
+        span{
+            margin-left: 10px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+    }
+    .title-avatar{
+        font-size: 20px;
+        font-weight: bold;
+        margin-top: 10px;
+    }
+    .avatar{
+        margin-top: 10px;
+        img{
+            width: 300px;
+            border-radius: 50%;
+        }
+    }
+}

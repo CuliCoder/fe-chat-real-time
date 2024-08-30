@@ -1,96 +1,121 @@
 .container-chat {
-    width: 80%;
-    height: 100vh;
-    .chat-header {
-      height: 8%;
+  height: 100vh;
+  padding: 0;
+  border-left: 1px solid rgb(230, 227, 227);
+  .chat-header {
+    height: 8%;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 10px;
+    border-bottom: 1px solid rgb(230, 227, 227);
+    padding: 0 0 0 10px;
+    user-select: none;
+    .btn-leave-room {
+      img {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+      }
+      :hover {
+        background-color: rgb(241, 241, 241);
+        cursor: pointer;
+      }
+    }
+    .btn-leave-room-dark-mode {
+      :hover {
+        background-color: #6c757d;
+      }
+    }
+    .chat-avatar {
+      .avatar {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+      }
+    }
+    .chat-name {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+  }
+  .chat-content {
+    height: 84%;
+    gap: 10px;
+    padding: 10px 10px 0 0;
+    display: flex;
+    flex-direction: column-reverse;
+    overflow-y: scroll;
+    .My-message {
       display: flex;
-      align-items: center;
+      flex-direction: row-reverse;
+      .message {
+        background-color: #0080ff;
+        color: white;
+        border-radius: 10px;
+        padding: 15px;
+        margin: 0 10px 0 10px;
+        overflow-wrap: anywhere;
+      }
+    }
+    .Other-message {
+      display: flex;
       flex-direction: row;
       gap: 10px;
-      border-bottom: 1px solid rgb(230, 227, 227);
-      padding: 0 10px 0 10px;
-      .chat-avatar {
-        .avatar {
-          background-color: rgb(17, 11, 11);
-          width: 45px;
-          height: 45px;
-          border-radius: 50%;
-        }
+      width: 100%;
+      .avatar {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        margin-left: 10px;
       }
-      .chat-name {
-        font-size: 1.2rem;
-        font-weight: bold;
+      .message {
+        background-color: #f0f2f5;
+        border-radius: 10px;
+        padding: 15px;
+        margin: 0 10px 0 0;
+        overflow-wrap: anywhere;
+      }
+      .message-dark-mode {
+        background-color: #65676b;
       }
     }
-    .chat-content {
-      height: 84%;
-      background-color: rgb(230, 227, 227);
-      gap: 10px;
-      padding-bottom: 10px;
+  }
+  .chat-input {
+    height: 8%;
+
+    .container-input {
+      width: 100%;
       display: flex;
-      flex-direction: column-reverse;
-      overflow-y: scroll;
-      .My-message {
-        display: flex;
-        flex-direction: row-reverse;
-        .message {
-          background-color: rgb(187, 205, 255);
-          border-radius: 10px;
-          padding: 15px;
-          margin: 0 10px 0 10px;
-          overflow-wrap: anywhere;
-        }
+      justify-content: center;
+      height: 100%;
+      gap: 10px;
+      padding: 10px;
+      .input-message {
+        width: 97%;
+        border: none;
+        outline: none;
+        border-radius: 10px;
+        background-color: rgb(224, 224, 224);
+        padding: 10px;
+        
       }
-      .Other-message {
-        display: flex;
-        flex-direction: row;
-        gap: 10px;
-        width: 100%;
-        .avatar {
-          background-color: rgb(17, 11, 11);
-          width: 45px;
-          height: 45px;
-          border-radius: 50%;
-          margin-left: 10px;
-        }
-        .message {
-          background-color: rgb(187, 205, 255);
-          border-radius: 10px;
-          padding: 15px;
-          margin: 0 10px 0 0;
-          overflow-wrap: anywhere;
-        }
+      .input-message-dark-mode {
+        background-color: #3a3b3c;
       }
-    }
-    .chat-input {
-      height: 8%;
-      .container-input {
+      .send-message {
+        width: 3%;
         display: flex;
         justify-content: center;
-        height: 100%;
-        gap: 10px;
-        padding: 10px;
-        .input-message {
-          width: 97%;
-          border: none;
-          outline: none;
-          border-radius: 10px;
-          background-color: rgb(224, 224, 224);
-          padding: 10px;
-        }
-        .send-message {
-          width: 3%;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          outline: none;
-          border: none;
-          background-color: rgba(255, 255, 255, 0);
-          .bi-send {
-            color: blue;
-            font-size: larger;
-          }
+        align-items: center;
+        outline: none;
+        border: none;
+        background-color: rgba(255, 255, 255, 0);
+        .bi-send {
+          color: blue;
+          font-size: larger;
         }
       }
     }
   }
+}

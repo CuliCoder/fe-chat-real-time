@@ -1,0 +1,52 @@
+.modal-dialog-center {
+  * {
+    user-select: none;
+  }
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  .modal-content {
+    .modal-header {
+      display: flex;
+      align-items: flex-start;
+    }
+    .modal-body {
+      .profile {
+        .profile-avatar {
+          .avatar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            img {
+              width: 200px;
+              border-radius: 50%;
+            }
+          }
+        }
+        .profile-name {
+          text-align: center;
+          border-bottom: 5px solid #f1f1f1;
+          padding: 10px 0 10px 0;
+        }
+        .profile-content {
+          padding: 10px 0 10px 0;
+          .content {
+            display: flex;
+            gap: 10px;
+            flex-direction: column;
+            margin-top: 10px;
+            .infor {
+              display: flex;
+              :nth-child(1) {
+                width: 150px;
+                color: #7e7e7e;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,8 +1,7 @@
 import { io } from "socket.io-client";
 import { get_token_io } from "./get_token";
 class Socket {
-  constructor() {
-  }
+  constructor() {}
   async initialize() {
     try {
       const token = await get_token_io();
@@ -43,8 +42,8 @@ class Socket {
   }
   handle_notification(callback) {
     if (!this.socket) return;
-    this.socket.on("notification", (message) => {
-      callback(message);
+    this.socket.on("notification", (fullname, message) => {
+      callback(fullname, message);
     });
   }
   handle_room(conversation_id) {
@@ -58,13 +57,24 @@ class Socket {
       callback();
     });
   }
+  handle_error(callback) {
+    if (!this.socket) return;
+    this.socket.on("error", (message) => {
+      callback(message);
+    });
+  }
   req_join_rom(conversation) {
     if (!this.socket) return;
     this.socket.emit("room", conversation);
   }
-  req_send_message(message) {
+  req_send_message(fullname, message) {
     if (!this.socket) return;
-    this.socket.emit("send message", message);
+    this.socket.emit("send message", fullname, message);
+  }
+  req_leave_room(callback) {
+    if (!this.socket) return;
+    this.socket.emit("leave room");
+    callback();
   }
 }
 export default Socket;

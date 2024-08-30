@@ -14,11 +14,12 @@ export const checkTel = (str) => {
 };
 export const checkRegisterInput = (infor) => {
   let error = {};
-  if (!infor.firstname) {
+  let rgName= /[^a-zA-Z0-9À-ỹ\s]/;
+  if (!infor.firstname || rgName.test(infor.firstname)) {
     error.firstname = "First name is invalid!";
     return error;
   }
-  if (!infor.surname) {
+  if (!infor.surname || rgName.test(infor.surname)) {
     error.surname = "Surname is invalid!";
     return error;
   }
@@ -62,6 +63,28 @@ export const checkLoginInput = (infor) => {
   }
   if (!infor.password) {
     error.password = "Password is invalid!";
+    return error;
+  }
+  return error;
+};
+export const checkEditProfileInput = (infor) => {
+  let error = {};
+  if (!infor.fullname) {
+    error.fullname = "Fullname is invalid!";
+    return error;
+  }
+  if (!infor.gender) {
+    error.gender = "Gender is invalid!";
+    return error;
+  }
+  if (!infor.DOB) {
+    error.DOB = "Date of birth is invalid!";
+    return error;
+  }
+  let date1 = new Date(infor.DOB);
+  let today = new Date();
+  if (today.getFullYear() - date1.getFullYear() < 16) {
+    error.DOB = "You must be 16 years or older to participate.";
     return error;
   }
   return error;
