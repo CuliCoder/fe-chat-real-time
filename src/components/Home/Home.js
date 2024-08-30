@@ -141,6 +141,7 @@ const Home = () => {
     socketInstance.req_leave_room(() => {
       dispatch(leave_conversation_action());
     });
+    close_list_user();
   }, [socketInstance]);
   const { mode } = useContext(ModeContext);
   return (

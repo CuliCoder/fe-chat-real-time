@@ -24,7 +24,7 @@ const Logout = () => {
       .then((res) => {
         console.log(res.data);
         dispatch(logout_Success());
-        // window.location.reload()
+        window.location.reload()
       })
       .catch((err) => {
         console.log(err.response);
