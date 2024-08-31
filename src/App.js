@@ -12,6 +12,18 @@ import { useDispatch, useSelector } from "react-redux";
 import Spinner from "./components/Spinner/Spinner";
 import { ModeProvider } from "./context/mode";
 function App() {
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = '//pl24224074.cpmrevenuegate.com/be/23/b8/be23b8b17f57723bd355b07add3c1ee1.js';
+    script.type = 'text/javascript';
+    script.async = true;
+    document.body.appendChild(script);
+
+    // Cleanup function to remove the script when the component is unmounted
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
   const dispatch = useDispatch();
   const loginStatus = useSelector((state) => state.statusLogin);
 
